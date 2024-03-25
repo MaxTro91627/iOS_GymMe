@@ -1,0 +1,15 @@
+{
+  "originHash" : "5f3d3cbb92ec70a9803abd142c851766d031b02c22375f9b6ba294094fa9dd23",
+  "pins" : [
+    {
+      "identity" : "swiftui-wrapping-stack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/diniska/swiftui-wrapping-stack",
+      "state" : {
+        "revision" : "1e6b0fffe902cf3ffc102af5e7c0c4767cbc09e0",
+        "version" : "1.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}
