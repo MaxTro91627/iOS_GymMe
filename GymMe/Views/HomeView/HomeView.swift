@@ -6,26 +6,39 @@
 //
 
 import SwiftUI
+import Firebase
+import SDWebImageSwiftUI
+
 
 struct HomeView: View {
+    @ObservedObject var homeViewController: HomeViewController = .init()
+    let uid = FirebaseManager.shared.auth.currentUser?.uid
     var body: some View {
-        ListOfImpressions()
-            .padding()
+        NavigationView {
+            VStack {
+                ListOfImpressions(homeViewController: homeViewController)
+                    .padding()
+            }
+            .navigationBarBackButtonHidden()
+        }
     }
 }
 
 
 struct ListOfImpressions: View {
+    @AppStorage("log_status") var log_status: Bool = false
+    @ObservedObject var homeViewController: HomeViewController
     @State private var currentDate: Date = .init()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
+    @State private var selectedIndex: Int = 1
     // Animation namespace
     @Namespace private var animation
-    @State var eventController: EventController = EventController()
+    @ObservedObject var eventController: EventController = .init()
     var body: some View {
-        NavigationStack {
             VStack {
+                //                Text(FirebaseManager.shared.currentUser?.nickname ?? "ggg")
                 ImpressionsView()
                     .padding(.top, 4)
                     .padding(.bottom, 6)
@@ -43,26 +56,18 @@ struct ListOfImpressions: View {
                 CategoryIconView()
                     .padding(.vertical, 1)
                 
-//                MARK: - ---------------------------
+                //                MARK: - ---------------------------
                 //                MARK: - NEED TO REWRITE
-                if (eventController.getListOfEvents().count == 0) {
-                    HStack {
-                        Text("There are no events yet")
-                            .foregroundStyle(AppConstants.accentBlueColor)
-                            .bold()
-                            .font(.title3)
-                            
-                    }
-                }
-                SelectedContentView(selectedIndex: 1)
+                SelectedContentView(selectedIndex: self.selectedIndex)
                 //                Text("Some Text")
                 Spacer()
                 
             }
-            
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button (action: {
+                        try? FirebaseManager.shared.auth.signOut()
+                        log_status.toggle()
                         print("save")
                     }, label: {
                         Image(systemName: "gear")
@@ -85,7 +90,7 @@ struct ListOfImpressions: View {
                     })
                 }
             }
-        }
+        
     }
     
     // MARK: WeekView
@@ -123,6 +128,11 @@ struct ListOfImpressions: View {
                     withAnimation(.snappy) {
                         currentDate = day.date
                     }
+                }
+                .onChange(of: currentDate) {
+                    self.selectedIndex = 1
+                    eventController.fetchLovedEvents(in: FirebaseManager.shared.currentUser?.lovedEvents ?? [], eventDate: currentDate)
+                    eventController.fetchEvents(eventDate: currentDate.startOfDay())
                 }
             }
         }
@@ -196,7 +206,7 @@ struct ListOfImpressions: View {
             })
             .padding(.horizontal)
             NavigationLink {
-                CreateEventView()
+                CreateEventView(eventController: eventController)
             } label: {
                 Image(systemName: "plus")
                     .resizable()
@@ -254,59 +264,106 @@ struct ListOfImpressions: View {
     // MARK: LovedEventsView
     @ViewBuilder
     func LovedEventsView() -> some View {
-        
+        VStack {
+            if (self.eventController.getLovedEvents().count == 0) {
+                HStack {
+                    Text("There are no events yet")
+                        .foregroundStyle(AppConstants.accentBlueColor)
+                        .bold()
+                        .font(.title3)
+                    
+                }
+            }
+            ScrollView(.vertical, showsIndicators: false) {
+                ForEach(eventController.getLovedEvents()) { event in
+                    NavigationLink {
+                        EventInfoView(event: event, homeViewController: self.homeViewController, eventController: self.eventController)
+                    } label: {
+                            EventCell(of: event)
+                                .frame(height: 82)
+                                .padding(.horizontal, 8)
+                                .padding(.trailing, 8)
+                                .background(content: {
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .stroke(AppConstants.accentBlueColor, lineWidth: 2)
+                                })
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 2)
+
+                    }
+                    .foregroundColor(.primary)
+                }
+                
+            }
+            
+        }
     }
     
     // MARK: EventListView
     @ViewBuilder
     func EventListView() -> some View {
         VStack {
-           
+            if (eventController.getListOfEvents().count == 0) {
+                HStack {
+                    Text("There are no events yet")
+                        .foregroundStyle(AppConstants.accentBlueColor)
+                        .bold()
+                        .font(.title3)
+                    
+                }
+            }
             ScrollView(.vertical, showsIndicators: false) {
                 ForEach(eventController.getListOfEvents()) { event in
                     NavigationLink {
-                        EventInfoView(event: event)
+                        EventInfoView(event: event, homeViewController: self.homeViewController, eventController: self.eventController)
                     } label: {
                         EventCell(of: event)
                             .frame(height: 82)
-                            .padding(.horizontal, 13)
+                            .padding(.horizontal, 8)
+                            .padding(.trailing, 8)
                             .background(content: {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(AppConstants.accentBlueColor, lineWidth: 2)
                             })
                             .padding(.vertical, 4)
-                        .padding(.horizontal, 2)
+                            .padding(.horizontal, 2)
                     }
                     .foregroundColor(.primary)
                 }
-                
             }
         }
     }
     
     // MARK: EventCell
     func EventCell(of event: EventModel) -> some View {
-        return HStack {
-            Image("PreviewImage")
-                .resizable()
+        return HStack(spacing: 7) {
+            if event.eventImageUrl != "" {
+                WebImage(url: URL(string: event.eventImageUrl))
+                    .resizable()
+                    .foregroundColor(AppConstants.accentOrangeColor)
+                    .frame(width: 65, height: 65)
+                //                    .padding(.trailing, 2)
+                    .cornerRadius(10)
+                    .clipped()
                 
-                .foregroundColor(AppConstants.accentOrangeColor)
-                .frame(maxWidth: 63, maxHeight: 57)
-                .padding(.trailing, 2)
+            }
             VStack (alignment: .leading){
                 Text(event.eventName)
                     .font(.body)
-                Text("Some arranger")
-                    .font(.callout)
+                Text(event.eventArrangerName)
+                    .font(.body)
+                    .fontWeight(.light)
                 Text("Some place")
                     .font(.callout)
+                    .foregroundStyle(.secondary)
             }
             Spacer()
             VStack(alignment: .leading) {
-                Text("22:00 -")
-                Text("23:00")
+                Text("\(event.eventStartTime.format("hh:mm")) -")
+                Text(event.eventEndTime.format("hh:mm"))
             }
             .foregroundColor(AppConstants.accentBlueColor)
+//            .bold()
         }
     }
     
@@ -316,13 +373,17 @@ struct ListOfImpressions: View {
         ZStack {
             switch selectedIndex {
             case 0:
-                MapView()
                 // MapView
+                MapView()
             case 2:
+                // LovedEvents
                 LovedEventsView()
-//              // LovedEvents
+                    .onAppear() {
+                        let lovedEventsId = FirebaseManager.shared.currentUser?.lovedEvents
+                        eventController.fetchLovedEvents(in: lovedEventsId ?? [], eventDate: currentDate)
+                    }
             default:
-//                EventListView
+                // EventListView
                 EventListView()
                 
             }
@@ -333,30 +394,42 @@ struct ListOfImpressions: View {
     // MARK: ----------------------------
     @ViewBuilder
     func CategoryIconView() -> some View {
+        let iconList = ["location", "list.bullet", "flame.fill"]
         VStack {
             HStack(spacing: 28) {
-                Image(systemName: "location")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 18, height: 18)
-                    .foregroundColor(AppConstants.darkBlue)
-                
-                Image(systemName: "list.bullet")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(AppConstants.accentOrangeColor)
-                
-                Image(systemName: "flame.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 16, height: 16)
-                    .foregroundColor(AppConstants.darkBlue)
+                ForEach(iconList.indices, id: \.self) {index in
+                    Image(systemName: iconList[index])
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 18, height: 18)
+                        .foregroundColor(self.selectedIndex == index ? AppConstants.accentOrangeColor : AppConstants.darkBlue)
+                        .onTapGesture {
+                            withAnimation(.bouncy) {
+                                self.selectedIndex = index
+                            }
+                        }
+                }
+                //                Image(systemName: "location")
+                //
+                //
+                //                Image(systemName: "list.bullet")
+                //                    .resizable()
+                //                    .aspectRatio(contentMode: .fill)
+                //                    .frame(width: 16, height: 16)
+                //                    .foregroundColor(AppConstants.accentOrangeColor)
+                //
+                //                Image(systemName: "flame.fill")
+                //                    .resizable()
+                //                    .aspectRatio(contentMode: .fill)
+                //                    .frame(width: 16, height: 16)
+                //                    .foregroundColor(AppConstants.darkBlue)
+            }
+            .onChange(of: self.selectedIndex) {
+                let lovedEventsId = FirebaseManager.shared.currentUser?.lovedEvents
+                eventController.fetchLovedEvents(in: lovedEventsId ?? [], eventDate: currentDate)
             }
         }
-        .onTapGesture {
-            
-        }
+        
         .background {
             
         }

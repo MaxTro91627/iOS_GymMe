@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseFirestore
 
-struct Training : Identifiable {
-    var id: UUID
+struct Training : Codable, Identifiable {
+    var id: String
     var trainingDate: Date
     var trainingName: String
-    var exercises: [Excercise]
-    var triningNote: String
-//    var trainingImage: Data
+    var exercises: [Exercise]
+    var trainingNote: String
+    var trainingImage: String?
 }

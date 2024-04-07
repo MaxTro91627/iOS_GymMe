@@ -66,6 +66,14 @@ extension Date {
         return fetchWeek(previousDate)
     }
     
+    func daysAgo(days: Int) -> Date {
+        let calendar = Calendar.current
+        guard let day = calendar.date(byAdding: .day, value: -days, to: .now.startOfDay()) else {
+            return .now
+        }
+        return day
+    }
+    
     struct WeekDay: Identifiable {
         var id: UUID = .init()
         var date: Date
@@ -143,5 +151,10 @@ extension Date {
             return yearssBetween
         }
         return 0
+    }
+    
+    func startOfDay() -> Date {
+        let calendar = Calendar.current
+        return calendar.startOfDay(for: self)
     }
 }

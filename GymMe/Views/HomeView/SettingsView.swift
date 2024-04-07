@@ -1,18 +1,18 @@
 //
-//  MessagesView.swift
+//  SettingsView.swift
 //  GymMe
 //
-//  Created by Максим Троицкий on 13.03.2024.
+//  Created by Максим Троицкий on 29.03.2024.
 //
 
 import SwiftUI
 
-struct MessagesView: View {
+struct SettingsView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    MessagesView()
+    SettingsView()
 }

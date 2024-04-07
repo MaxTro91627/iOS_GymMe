@@ -6,33 +6,51 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
-struct PersonModel {
-    var id: UUID
+struct PersonModel: Codable, Identifiable {
+    
+    @DocumentID var id: String?
     var nickname: String
-//    var photo: Data
+    var photoUrl: String
     var phoneNumber: String
-    var Trainings: [Training]
+    var trainings: [Training]
     var organizedEvents: [EventModel]
-    var attendedEvents: [EventModel]
-    var FriendsId: [UUID]
-//    var impressions: [Impression]
+    var lovedEvents: [String?]
+    var friendsId: [String?]
+    var impressions: [Impression]
+//    var attendedEvents: [String?]
+    
+    init (nickname: String, phoneNumber: String) {
+        self.nickname = nickname
+        self.phoneNumber = phoneNumber
+        self.trainings = []
+        self.organizedEvents = []
+        self.lovedEvents = []
+        self.friendsId = []
+        self.photoUrl = ""
+        self.impressions = []
+//        self.attendedEvents = []
+    }
 }
 
 extension PersonModel {
     func getAttendedEvents() -> [EventModel] {
-        return attendedEvents
+        return []
+//        return attendedEvents
     }
     
-    func getPersonId() -> UUID {
+    func getPersonId() -> String? {
         return id
     }
     
     func getFriendsId() -> [UUID] {
-        return FriendsId
+        return []
+//        return friendsId
     }
     
     func getTrainings() -> [Training] {
-        return Trainings
+        return []
+//        return trainings
     }
 }

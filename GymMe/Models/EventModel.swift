@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
-struct EventModel: Identifiable {
-    var id: UUID
+struct EventModel: Codable, Identifiable {
+    @DocumentID var id: String?
     var eventName: String
+    var eventImageUrl: String
     var eventDiscription: String
     var eventStartTime: Date
     var eventEndTime: Date
     var eventRequirement: String
+    var eventDate: Date
     // eventPlace
-    var eventArranger: UUID
+    var eventArrangerName: String
 }
