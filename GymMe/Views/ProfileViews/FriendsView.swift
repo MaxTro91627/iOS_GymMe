@@ -13,7 +13,6 @@ struct FriendsView: View {
     @State var searchText: String = ""
     @State var user: PersonModel?
     @ObservedObject var profileViewModel: ProfileViewModel
-    @ObservedObject var statisticViewModel: StatisticViewModel
     @Environment(\.dismiss) var dismiss
     @State var showAddFriendView = false
     var body: some View {
@@ -34,7 +33,7 @@ struct FriendsView: View {
                 ScrollView {
                     ForEach(profileViewModel.friends) { friend in
                         HStack {
-                            NavigationLink (destination: FriendInfoView(friend: friend, profileViewModel: profileViewModel, statisticViewModel: statisticViewModel), label: {
+                            NavigationLink (destination: FriendInfoView(friend: friend, profileViewModel: profileViewModel), label: {
                                 if (searchText != "") {
                                     if (friend.nickname.lowercased().contains(searchText.lowercased()) || friend.phoneNumber.contains(searchText)) {
                                         FriendCell(friend: friend, showArrow: true)
@@ -60,7 +59,7 @@ struct FriendsView: View {
             }
         }
         .sheet(isPresented: $showAddFriendView) {
-            AddFriendView(profileViewModel: profileViewModel, statisticViewModel: statisticViewModel)
+            AddFriendView(profileViewModel: profileViewModel)
         }
         .navigationBarBackButtonHidden()
         .toolbar() {
@@ -131,7 +130,6 @@ struct FriendCell: View {
 struct AddFriendView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var profileViewModel: ProfileViewModel
-    @ObservedObject var statisticViewModel: StatisticViewModel
     @State var text: String = ""
     var body: some View {
         VStack {
@@ -176,7 +174,7 @@ struct AddFriendView: View {
     @ViewBuilder
     func AddFriendCell(friend: PersonModel) -> some View {
         HStack (spacing: 20) {
-            NavigationLink (destination: FriendInfoView(friend: friend, profileViewModel: profileViewModel, statisticViewModel: statisticViewModel), label: {
+            NavigationLink (destination: FriendInfoView(friend: friend, profileViewModel: profileViewModel), label: {
                 FriendCell(friend: friend, showArrow: false)
             })
             .foregroundStyle(.primary)

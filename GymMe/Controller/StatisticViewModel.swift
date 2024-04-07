@@ -94,8 +94,6 @@ class StatisticViewModel: ObservableObject {
     func wasEvent(off: Int, events: [EventModel]) -> Bool {
         let day = Date().daysAgo(days: off).startOfDay()
         for event in events {
-            print(event.eventDate)
-            print(day)
             if event.eventDate == day {
                 return true
             }

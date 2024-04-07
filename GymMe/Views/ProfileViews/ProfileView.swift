@@ -18,7 +18,7 @@ struct ProfileView: View {
         VStack {
             ToolBarView()
             ScrollView {
-                ProfileInfoView(user: FirebaseManager.shared.currentUser, profileViewModel: profileViewModel, statisticViewModel: statisticViewModel)
+                ProfileInfoView(user: FirebaseManager.shared.currentUser, profileViewModel: profileViewModel)
                 NavigationLink(destination: StatisticView(statisticViewModel: statisticViewModel, lovedEvents: profileViewModel.lovedEvents)) {
                     StatisticRectangle(person: FirebaseManager.shared.currentUser, statisticViewModel: statisticViewModel, profileViewModel: profileViewModel)
                 }
@@ -147,7 +147,6 @@ struct ProfileInfoView: View {
     //        let person = profileController.person
     @State var user: PersonModel?
     @ObservedObject var profileViewModel: ProfileViewModel
-    @ObservedObject var statisticViewModel: StatisticViewModel
 //    @State var user: PersonModel?
 //    let imageUrl = FirebaseManager.shared.currentUser?.photoUrl
     var body: some View {
@@ -183,7 +182,7 @@ struct ProfileInfoView: View {
                     NavigationLink(destination: AttendedEventsView(profileViewModel: profileViewModel, user: user), label: {
                         attendedEventsView(for: user)
                     })
-                    NavigationLink(destination: FriendsView(user: user, profileViewModel: profileViewModel, statisticViewModel: statisticViewModel), label: {
+                    NavigationLink(destination: FriendsView(user: user, profileViewModel: profileViewModel), label: {
                         friendsCountView(for: user)
                     })
                     trainingsCountView(for: user)
