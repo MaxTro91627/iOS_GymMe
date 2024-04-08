@@ -91,6 +91,34 @@ struct CreateTrainingView: View {
                 Spacer()
             }
             .padding()
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Image(systemName: "arrow.left")
+                            .foregroundStyle(AppConstants.accentOrangeColor)
+                    })
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: {
+                        trainingsViewModel.addTraining()
+                        dismiss()
+                    }, label: {
+                        Text("Add training")
+                            .bold()
+                            .foregroundStyle(.white)
+                            .padding(8)
+                            .padding(.horizontal, 20)
+                            .background(content: {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(AppConstants.accentOrangeColor)
+                            })
+                    })
+                }
+            }
+            
+            
         }
         .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
             ImagePicker(image: $trainingsViewModel.image)
@@ -100,32 +128,6 @@ struct CreateTrainingView: View {
             AddExerciseView(trainingsViewModel: trainingsViewModel, plusButtonTabbed: $plusButtonTabbed)
         })
         .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    dismiss()
-                }, label: {
-                    Image(systemName: "arrow.left")
-                        .foregroundStyle(AppConstants.accentOrangeColor)
-                })
-            }
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    trainingsViewModel.addTraining()
-                    dismiss()
-                }, label: {
-                    Text("Add training")
-                        .bold()
-                        .foregroundStyle(.white)
-                        .padding(8)
-                        .padding(.horizontal, 20)
-                        .background(content: {
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(AppConstants.accentOrangeColor)
-                        })
-                })
-            }
-        }
         
     }
     

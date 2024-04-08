@@ -10,10 +10,13 @@ import SDWebImageSwiftUI
 
 struct EventInfoView: View {
     @Environment(\.dismiss) private var dismiss
-    var event: EventModel
+    @State var event: EventModel
     @State var screenWidth = UIScreen.main.bounds.size.width
     @ObservedObject var homeViewController: HomeViewController
     @ObservedObject var eventController: EventController
+    @State var shouldShowFriends: Bool = false
+    @State var friendName = ""
+    @State var sendToIds: [String?] = []
 //    init(event: EventModel) {
 //        self.event = event
 //        
@@ -178,7 +181,7 @@ struct EventInfoView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        
+                        shouldShowFriends.toggle()
                     }, label: {
                         Image(systemName: "square.and.arrow.up")
                             .foregroundColor(AppConstants.accentOrangeColor)
@@ -186,7 +189,98 @@ struct EventInfoView: View {
                 }
             }
         }
+        .sheet(isPresented: $shouldShowFriends) {
+            HStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(maxWidth: 100, maxHeight: 3)
+                    .foregroundStyle(.primary)
+                    .opacity(0.3)
+            }
+            .padding(.top)
+            TextField("Friend Name", text: $friendName, axis: .vertical)
+                .lineLimit(1)
+                .font(.title2)
+                .padding(.vertical, 6)
+                .padding(.horizontal)
+                .background(content: {
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(AppConstants.accentOrangeColor)
+                })
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+            ScrollView {
+                ForEach(homeViewController.friends) { friend in
+                    if (friend.nickname.lowercased().contains(friendName.lowercased()) || friend.phoneNumber.contains(friendName) || friendName == "") {
+                        HStack (spacing: 15) {
+                            if friend.photoUrl != "" {
+                                WebImage(url: URL(string: friend.photoUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 60, height: 60)
+                                    .cornerRadius(50)
+                            } else {
+                                Image(systemName: "person")
+                                    .resizable()
+                                    .opacity(0.6)
+                                    .padding(12)
+                                    .background(content: {
+                                        Circle()
+                                            .stroke(AppConstants.accentOrangeColor, lineWidth: 1)
+                                    })
+                                    .frame(width: 60, height: 60)
+                                    .padding(1)
+                                    .foregroundStyle(AppConstants.accentBlueColor)
+                            }
+                            VStack (alignment: .leading, spacing: 10) {
+                                Text(friend.nickname)
+                                    .bold()
+                                Text(friend.phoneNumber)
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Button(action: {
+                                if (sendToIds.contains(friend.id)) {
+                                    sendToIds.remove(at: sendToIds.firstIndex(of: friend.id)!)
+                                } else {
+                                    sendToIds.append(friend.id)
+                                }
+                            }, label: {
+                                if sendToIds.contains(friend.id) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .resizable()
+                                        .frame(maxWidth: 30, maxHeight: 30)
+                                        .foregroundStyle(AppConstants.accentBlueColor)
+                                } else {
+                                    Circle()
+                                        .stroke(AppConstants.accentBlueColor)
+                                        .frame(width: 30, height: 30)
+                                }
+                            })
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+            }
+            HStack {
+                Button(action: {
+                    shouldShowFriends.toggle()
+                    self.homeViewController.sendInvite(to: sendToIds, inviteEvent: event)
+                }, label: {
+                    Text("Send Invite")
+                        .foregroundStyle(.white)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 20)
+                        .background(content: {
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundStyle(AppConstants.accentOrangeColor)
+                        })
+                })
+            }
+        }
         .navigationBarBackButtonHidden()
+        
     }
     
     //        .navigationBarItems(trailing: {

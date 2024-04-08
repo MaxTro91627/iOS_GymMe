@@ -57,28 +57,29 @@ struct FriendsView: View {
                 }
                 Spacer()
             }
-        }
-        .sheet(isPresented: $showAddFriendView) {
-            AddFriendView(profileViewModel: profileViewModel)
+            .toolbar() {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Image(systemName: "arrow.left")
+                            .foregroundStyle(AppConstants.accentOrangeColor)
+                    })
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        showAddFriendView.toggle()
+                    }, label: {
+                        Image(systemName: "plus.app")
+                            .foregroundStyle(AppConstants.accentOrangeColor)
+                    })
+                }
+            }
+            Spacer()
         }
         .navigationBarBackButtonHidden()
-        .toolbar() {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    dismiss()
-                }, label: {
-                    Image(systemName: "arrow.left")
-                        .foregroundStyle(AppConstants.accentOrangeColor)
-                })
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    showAddFriendView.toggle()
-                }, label: {
-                    Image(systemName: "plus.app")
-                        .foregroundStyle(AppConstants.accentOrangeColor)
-                })
-            }
+        .sheet(isPresented: $showAddFriendView) {
+            AddFriendView(profileViewModel: profileViewModel)
         }
     }
 }

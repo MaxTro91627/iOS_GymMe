@@ -17,6 +17,7 @@ struct EventModel: Codable, Identifiable {
     var eventEndTime: Date
     var eventRequirement: String
     var eventDate: Date
+    var eventId: String?
     // eventPlace
     var eventArrangerName: String
 }

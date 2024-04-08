@@ -31,8 +31,6 @@ class EventController: ObservableObject {
         }
     
     func fetchLovedEvents(in eventsId: [String?], eventDate: Date) {
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
-//        
         firestoreListener1?.remove()
         self.lovedEvents.removeAll()
 //        
@@ -67,9 +65,26 @@ class EventController: ObservableObject {
             }
     }
     
+    func addLovedEvent(id: String?) {
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
+        var lovedEvents = FirebaseManager.shared.currentUser?.lovedEvents
+        lovedEvents?.append(id)
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).updateData(["lovedEvents": lovedEvents as Any])
+        FirebaseManager.shared.currentUser?.lovedEvents = lovedEvents ?? []
+        print("Attended Events update")
+    }
+    
+    func deleteLovedEvent(id: String?) {
+        FirebaseManager.shared.currentUser?.lovedEvents.removeAll(where: {id == $0})
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
+        let lovedEvents = FirebaseManager.shared.currentUser?.lovedEvents
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).updateData(["lovedEvents": lovedEvents as Any])
+    }
+    
     func fetchEvents(eventDate: Date) {
-//        Task {
-            guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
             
             firestoreListener?.remove()
             self.listOfEvents.removeAll()
@@ -113,6 +128,8 @@ class EventController: ObservableObject {
         let uid = UUID().uuidString
         let imageUrlString: String = imageUrl?.absoluteString ?? ""
         let eventData = [
+            "id": uid,
+            "eventId": uid,
             "eventName": self.eventName,
             "eventImageUrl": imageUrlString,
             "eventDiscription": self.eventDiscription,

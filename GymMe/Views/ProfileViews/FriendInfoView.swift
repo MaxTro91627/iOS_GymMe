@@ -153,18 +153,18 @@ struct FriendInfoView: View {
                 FriendsStatisticRectangle(friendsStatisticViewModel: friendsStatisticViewModel)
                 Spacer()
             }
-        }
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    dismiss()
-                }, label: {
-                    Image(systemName: "arrow.left")
-                        .foregroundStyle(AppConstants.accentOrangeColor)
-                })
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Image(systemName: "arrow.left")
+                            .foregroundStyle(AppConstants.accentOrangeColor)
+                    })
+                }
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 

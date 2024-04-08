@@ -12,4 +12,5 @@ struct ChatMessage: Codable, Identifiable {
     @DocumentID var id: String?
     var fromId, toId, text: String
     var timestamp: Date
+    var event: EventModel?
 }
