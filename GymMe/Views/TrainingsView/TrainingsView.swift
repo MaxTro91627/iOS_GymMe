@@ -25,7 +25,7 @@ struct TrainingsView: View {
                         
                     }, label: {
                         
-                        Image(systemName: "calendar")
+                        Image(systemName: "")
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(AppConstants.accentOrangeColor)

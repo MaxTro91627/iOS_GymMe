@@ -128,7 +128,9 @@ struct ChatsView: View {
         NavigationView {
             VStack {
                 HStack {
-                    TextField("Search your friend", text: $searchText)
+                    TextField("Search your friend", text: $searchText){
+                        UIApplication.shared.endEditing()
+                    }
                         .lineLimit(1)
                         .padding(.horizontal)
                         .padding(.vertical, 8)

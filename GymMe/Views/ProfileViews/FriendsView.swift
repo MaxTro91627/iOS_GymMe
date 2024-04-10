@@ -19,7 +19,9 @@ struct FriendsView: View {
         NavigationView {
             VStack {
                 HStack {
-                    TextField("Search your friend", text: $searchText)
+                    TextField("Search your friend", text: $searchText) {
+                        UIApplication.shared.endEditing()
+                    }
                         .lineLimit(1)
                         .padding(.horizontal)
                         .padding(.vertical, 8)
@@ -134,7 +136,9 @@ struct AddFriendView: View {
     @State var text: String = ""
     var body: some View {
         VStack {
-            TextField("Enter phone Number", text: $text)
+            TextField("Enter phone Number", text: $text) {
+                UIApplication.shared.endEditing()
+            }
                 .padding(.horizontal)
                 .padding(.vertical, 8)
                 .background(content: {

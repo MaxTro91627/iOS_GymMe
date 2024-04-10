@@ -235,6 +235,7 @@ class HomeViewController: ObservableObject {
     
     func sendInvite(to personIds: [String?], inviteEvent: EventModel) {
         getFriends(friendsId: personIds)
+        
         guard let fromId = FirebaseManager.shared.currentUser?.id else { return }
         for personId in personIds {
             let document = FirebaseManager.shared.firestore.collection("messages").document(fromId).collection(personId!).document()

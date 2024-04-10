@@ -118,7 +118,8 @@ struct CreateEventView: View {
                             .font(.title2)
                             .foregroundStyle(AppConstants.accentBlueColor)
                         TextField("Enter event's requirements", text: $eventController.eventRequirement, axis: .vertical)
-                            .lineLimit(2)                        .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                            .foregroundStyle(.secondary)
                         Text("Location:")
                             .font(.title2)
                             .foregroundStyle(AppConstants.accentBlueColor)
@@ -143,6 +144,34 @@ struct CreateEventView: View {
                     .padding(.horizontal)
                     Spacer()
                 }
+                Spacer()
+                HStack {
+                    Button(action: {
+                        if (eventController.eventName != "") {
+                            eventController.image = self.image
+                            eventController.createEvent()
+                            
+                            dismiss()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 20) {
+                                homeViewController.sendInvite(to: sendToIds, inviteEvent: eventController.createdEvent!)
+                            }
+                            
+                        } else {
+                            showError = true
+                        }
+                    }, label: {
+                        Text("Create")
+                            .bold()
+                            .foregroundStyle(.white)
+                            .background(content: {
+                                RoundedRectangle(cornerRadius: 30)
+                                    .fill(AppConstants.accentOrangeColor)
+                                    .frame(width: 250, height: 40)
+                            })
+                    })
+                }
+                .hSpacing(.center)
+                .padding(.bottom)
             }
             .sheet(isPresented: $shouldShowFriends) {
                 HStack {
@@ -241,31 +270,9 @@ struct CreateEventView: View {
         .navigationTitle("Create Event")
         .navigationBarBackButtonHidden()
         .toolbar() {
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: {
-                    if (eventController.eventName != "") {
-                        eventController.image = self.image
-                        eventController.createEvent()
-                        
-                        dismiss()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            homeViewController.sendInvite(to: sendToIds, inviteEvent: eventController.createdEvent!)
-                        }
-                        
-                    } else {
-                        showError = true
-                    }
-                }, label: {
-                    Text("Create")
-                        .bold()
-                        .foregroundStyle(.white)
-                        .background(content: {
-                            RoundedRectangle(cornerRadius: 30)
-                                .fill(AppConstants.accentOrangeColor)
-                                .frame(width: 250, height: 40)
-                        })
-                })
-            }
+//            ToolbarItem(placement: .bottomBar) {
+//                
+//            }
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
                     eventController.clearFields()

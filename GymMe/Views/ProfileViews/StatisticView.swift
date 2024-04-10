@@ -67,6 +67,7 @@ struct StatisticView: View {
                         .foregroundStyle(AppConstants.lightAccentBlueColor)
                     ExercisesStatisticInfoView()
                 }
+                Spacer()
             }
             .onAppear() {
                 statisticViewModel.getTrainingsInPeriod(start: startDate, end: endDate)

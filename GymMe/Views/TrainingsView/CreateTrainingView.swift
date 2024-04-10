@@ -88,19 +88,9 @@ struct CreateTrainingView: View {
                         .lineLimit(6)
                     
                 }
+                .scrollIndicators(.hidden)
                 Spacer()
-            }
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }, label: {
-                        Image(systemName: "arrow.left")
-                            .foregroundStyle(AppConstants.accentOrangeColor)
-                    })
-                }
-                ToolbarItem(placement: .bottomBar) {
+                HStack {
                     Button(action: {
                         trainingsViewModel.addTraining()
                         dismiss()
@@ -116,6 +106,21 @@ struct CreateTrainingView: View {
                             })
                     })
                 }
+                .padding(.bottom)
+            }
+            .padding()
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Image(systemName: "arrow.left")
+                            .foregroundStyle(AppConstants.accentOrangeColor)
+                    })
+                }
+//                ToolbarItem(placement: .bottomBar) {
+//                    
+//                }
             }
             
             

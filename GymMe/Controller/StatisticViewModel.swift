@@ -94,7 +94,7 @@ class StatisticViewModel: ObservableObject {
     func wasEvent(off: Int, events: [EventModel]) -> Bool {
         let day = Date().daysAgo(days: off).startOfDay()
         for event in events {
-            if event.eventDate == day {
+            if event.eventDate.startOfDay() == day.startOfDay() {
                 return true
             }
             if event.eventDate.daysBetween(date: .now) > 70 {
@@ -161,8 +161,8 @@ class StatisticViewModel: ObservableObject {
         var statList: [Float] = []
         for off in 0..<70 {
             dayStat = 0
-            let offDay = Date().daysAgo(days: off)
-            if let idx = trainings.firstIndex(where: {$0.trainingDate.startOfDay() == offDay}) {
+            let offDay = Date().daysAgo(days: off).startOfDay()
+            if let idx = trainings.firstIndex(where: {$0.trainingDate.startOfDay() == offDay.startOfDay()}) {
                 let training = trainings[idx]
                 dayStat = countStat(for: training)
             }

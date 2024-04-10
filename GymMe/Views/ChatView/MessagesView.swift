@@ -372,7 +372,7 @@ struct MessagesView: View {
                     .foregroundStyle(.secondary)
                     .font(.title3)
                     .padding(.trailing, 4)
-                TextField("Write your message here", text: $messagesViewModel.messageText, axis: .vertical) 
+                TextField("Write your message here", text: $messagesViewModel.messageText, axis: .vertical)
                     .font(.title3)
                     .lineLimit(3)
                     .padding(4)

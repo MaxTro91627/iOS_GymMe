@@ -38,7 +38,9 @@ struct AddExerciseView: View {
                 }
                 .padding(.top, 12)
                 HStack {
-                    TextField("Enter the name of exercise", text: $exerciseName)
+                    TextField("Enter the name of exercise", text: $exerciseName) {
+                        UIApplication.shared.endEditing()
+                    }
                         .fontWeight(.semibold)
                         .foregroundStyle(.secondary)
                         .font(.title2)
@@ -135,9 +137,11 @@ struct AddExerciseView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     HStack(spacing: 0) {
-                        TextField("0.5", text: self.$timeText)
+                        TextField("0.5", text: self.$timeText) {
+                            UIApplication.shared.endEditing()
+                        }
                             .frame(width: 43)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.numbersAndPunctuation)
                             .onChange(of: timeText) {
                                 if (Float(timeText.replacingOccurrences(of: ",", with: ".")) != nil) {
                                     self.time = Float(timeText.replacingOccurrences(of: ",", with: "."))
@@ -182,9 +186,11 @@ struct AddExerciseView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     HStack {
-                        TextField("0.33", text: self.$distanceText)
+                        TextField("0.33", text: self.$distanceText) {
+                            UIApplication.shared.endEditing()
+                        }
                             .frame(width: 43)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.numbersAndPunctuation)
                             .onChange(of: distanceText) {
                                 if Float(distanceText.replacingOccurrences(of: ",", with: ".")) != nil {
                                     self.distance = Float(distanceText.replacingOccurrences(of: ",", with: "."))
@@ -214,7 +220,7 @@ struct AddExerciseView: View {
                     Button(action: {
                         self.weight = 7.5
                     }, label: {
-                        Text("+ Add total weight")
+                        Text("+ Add weight")
                             .bold()
                     })
                     .foregroundColor(.secondary)
@@ -228,9 +234,11 @@ struct AddExerciseView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     HStack {
-                        TextField("7.5", text: self.$weightText)
+                        TextField("7.5", text: self.$weightText) {
+                            UIApplication.shared.endEditing()
+                        }
                             .frame(width: 43)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.numbersAndPunctuation)
                             .onChange(of: weightText) {
                                 if Float(weightText.replacingOccurrences(of: ",", with: ".")) != nil {
                                     self.weight = Float(weightText.replacingOccurrences(of: ",", with: "."))
@@ -261,7 +269,7 @@ struct AddExerciseView: View {
                     Button(action: {
                         self.sets = 1
                     }, label: {
-                        Text("+ Add total time")
+                        Text("+ Add sets")
                             .bold()
                     })
                     .foregroundColor(.secondary)
@@ -275,9 +283,11 @@ struct AddExerciseView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     HStack {
-                        TextField("1", text: self.$setsText)
+                        TextField("1", text: self.$setsText) {
+                            UIApplication.shared.endEditing()
+                        }
                             .frame(width: 20)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.numbersAndPunctuation)
                             .onChange(of: setsText) {
                                 if Int(setsText.replacingOccurrences(of: ",", with: ".")) != nil {
                                     self.sets = Int(setsText.replacingOccurrences(of: ",", with: "."))
@@ -322,9 +332,11 @@ struct AddExerciseView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     HStack {
-                        TextField("1", text: self.$repsText)
+                        TextField("1", text: self.$repsText) {
+                            UIApplication.shared.endEditing()
+                        }
                             .frame(width: 20)
-                            .keyboardType(.numberPad)
+                            .keyboardType(.numbersAndPunctuation)
                             .onChange(of: repsText) {
                                 if (Int(repsText.replacingOccurrences(of: ",", with: ".")) != nil) {
                                     self.reps = Int(repsText.replacingOccurrences(of: ",", with: "."))

@@ -97,7 +97,9 @@ struct RegisterUserView: View {
             
             
             HStack (alignment: .center) {
-                TextField("Enter your name", text: $authController.nickname)
+                TextField("Enter your name", text: $authController.nickname) {
+                    UIApplication.shared.endEditing()
+                }
                     .padding()
                     .background(content: {
                         RoundedRectangle(cornerRadius: 20)
@@ -161,7 +163,9 @@ struct VerifyPhoneNumberView: View {
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 20)
-                TextField("Phone Number", text: $authController.phoneNumber)
+                TextField("Phone Number", text: $authController.phoneNumber) {
+                    UIApplication.shared.endEditing()
+                }
                     .keyboardType(.namePhonePad)
                     .textContentType(contentType)
                     .autocapitalization(.none)
@@ -210,7 +214,9 @@ struct VerifyCodeView: View {
                         .fontWeight(.semibold)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 20)
-                    TextField("Verification code", text: $authController.otpCode)
+                    TextField("Verification code", text: $authController.otpCode) {
+                        UIApplication.shared.endEditing()
+                    }
                         .keyboardType(.namePhonePad)
                         .textContentType(contentType)
                         .autocapitalization(.none)
