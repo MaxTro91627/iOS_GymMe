@@ -17,3 +17,4 @@ struct Training : Codable, Identifiable {
     var trainingNote: String
     var trainingImage: String?
 }
+

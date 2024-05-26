@@ -78,6 +78,7 @@ struct ListOfImpressions: View {
                 if FirebaseManager.shared.currentUser != nil {
                     homeViewController.getAllImpressions()
                 }
+                currentDate = .now.startOfDay()
                 
             }
 //            .toolbar {

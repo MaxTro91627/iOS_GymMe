@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CreateTrainingView: View {
     @ObservedObject var trainingsViewModel: TrainingsViewModel
@@ -15,6 +16,8 @@ struct CreateTrainingView: View {
     @State var textNotes: String = ""
     @State var showError = false
     @State var plusButtonTabbed = false
+    @Query private var trainings: [TrainingEntity]
+    @Environment(\.modelContext) private var context
     var body: some View {
         NavigationView {
             VStack {
@@ -92,6 +95,7 @@ struct CreateTrainingView: View {
                 Spacer()
                 HStack {
                     Button(action: {
+                        context.insert(trainingsViewModel.getTraining())
                         trainingsViewModel.addTraining()
                         dismiss()
                     }, label: {
@@ -135,7 +139,7 @@ struct CreateTrainingView: View {
         .navigationBarBackButtonHidden()
         
     }
-    
+
 }
 
 //#Preview {

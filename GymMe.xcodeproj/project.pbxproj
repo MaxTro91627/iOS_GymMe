@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		943F67932C02481700DD54E3 /* CoreData+Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943F67922C02481700DD54E3 /* CoreData+Cache.swift */; };
 		944F8A5E2BB5A6E0006AEDDB /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944F8A5D2BB5A6E0006AEDDB /* AuthView.swift */; };
 		944F8A602BB5AE10006AEDDB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 944F8A5F2BB5AE10006AEDDB /* GoogleService-Info.plist */; };
 		944F8A632BB5B210006AEDDB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 944F8A622BB5B210006AEDDB /* FirebaseAnalytics */; };
@@ -95,6 +96,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		943F67922C02481700DD54E3 /* CoreData+Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreData+Cache.swift"; sourceTree = "<group>"; };
 		944F8A5D2BB5A6E0006AEDDB /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		944F8A5F2BB5AE10006AEDDB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		944F8A762BB5CA0C006AEDDB /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
@@ -304,13 +306,13 @@
 			children = (
 				944F8A782BB5DA49006AEDDB /* Info.plist */,
 				94D054E02B8FE748000C377D /* GymMeApp.swift */,
+				943F67922C02481700DD54E3 /* CoreData+Cache.swift */,
 				947BFF6C2B928825003F6BA6 /* AppConstants.swift */,
 				944F8A7D2BB9A30F006AEDDB /* Helpers */,
 				947BFF702B929C4A003F6BA6 /* Extensions */,
 				94D055112B8FEB30000C377D /* Controller */,
 				94D055102B8FEB28000C377D /* Views */,
 				94D0550F2B8FEB1F000C377D /* Models */,
-				94D054E22B8FE748000C377D /* ContentView.swift */,
 				944F8A5F2BB5AE10006AEDDB /* GoogleService-Info.plist */,
 				94D054E42B8FE749000C377D /* Assets.xcassets */,
 				94D054E92B8FE749000C377D /* Persistence.swift */,
@@ -348,6 +350,7 @@
 		94D0550F2B8FEB1F000C377D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				94D054E22B8FE748000C377D /* ContentView.swift */,
 				94D055182B91E908000C377D /* Friend.swift */,
 				94D4F65F2BA28B6100D25AE5 /* EventModel.swift */,
 				94D4F6672BA4524D00D25AE5 /* Training.swift */,
@@ -494,6 +497,7 @@
 				94D4F66D2BA492A900D25AE5 /* XCRemoteSwiftPackageReference "swiftui-wrapping-stack" */,
 				944F8A612BB5B210006AEDDB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				944F8A822BB9C119006AEDDB /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				943F67942C03BB0700DD54E3 /* XCRemoteSwiftPackageReference "url-image" */,
 			);
 			productRefGroup = 94D054DE2B8FE748000C377D /* Products */;
 			projectDirPath = "";
@@ -575,6 +579,7 @@
 				947BFF742B92E2B7003F6BA6 /* OffsetKey.swift in Sources */,
 				944F8A9F2BBE2636006AEDDB /* TrainingInfoView.swift in Sources */,
 				94D4F6712BA6012000D25AE5 /* PersonModel.swift in Sources */,
+				943F67932C02481700DD54E3 /* CoreData+Cache.swift in Sources */,
 				949FA39A2BA22B9D000D016F /* MessagesView.swift in Sources */,
 				949FA39C2BA22BAD000D016F /* ProfileView.swift in Sources */,
 				944F8A922BBD9AD2006AEDDB /* FriendInfoView.swift in Sources */,
@@ -921,6 +926,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		943F67942C03BB0700DD54E3 /* XCRemoteSwiftPackageReference "url-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
 		944F8A612BB5B210006AEDDB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";

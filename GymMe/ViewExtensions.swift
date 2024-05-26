@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 extension View {
-    // Spacing Extension for Calendar
     @ViewBuilder
     func hSpacing(_ alignment: Alignment) -> some View {
         self

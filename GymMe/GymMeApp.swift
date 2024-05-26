@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import SwiftData
 
 @main
 struct GymMeApp: App {
@@ -19,12 +20,14 @@ struct GymMeApp: App {
         WindowGroup {
             if log_status {
                 ContentView()
+                    .modelContainer(for: TrainingEntity.self)
             } else {
                 AuthView(authController: authController)
             }
 //                .preferredColorScheme(.dark)
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+        
     }
 }
 

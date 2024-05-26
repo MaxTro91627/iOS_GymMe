@@ -154,6 +154,7 @@ struct EventInfoView: View {
                         })
                     } else {
                         Button(action: {
+                            // MARK: - UPD. Added image cash
                             homeViewController.addLovedEvent(id: event.id)
                             dismiss()
                         }, label: {

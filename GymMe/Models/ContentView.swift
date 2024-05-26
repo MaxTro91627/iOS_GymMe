@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
-import CoreData
+import SwiftData
 import Firebase
 import FirebaseFirestoreSwift
 
+
 class ContentViewController: ObservableObject {
+    
     
     @Published var errorMessage = ""
     @Published var personModel: PersonModel?
@@ -45,6 +47,8 @@ struct ContentView: View {
 //    @ObservedObject private var vc = ContentViewController()
     @State var selectedViewIndex: Int = 0;
     @Namespace private var animation
+    @Query private var trainings: [TrainingEntity]
+    @Environment(\.modelContext) private var context
     let tabbarImages = ["house", "dumbbell", "message.badge", "person"]
     var body: some View {
         NavigationStack {
@@ -58,6 +62,7 @@ struct ContentView: View {
                     switch selectedViewIndex {
                     case 1:
                         TrainingsView()
+                            .modelContainer(for: TrainingEntity.self)
                     case 2:
                         ChatsView()
                     case 3:

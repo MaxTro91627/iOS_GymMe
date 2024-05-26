@@ -17,6 +17,8 @@ class TrainingsViewModel: ObservableObject {
     
     @Published var trainingName: String = ""
     @Published var trainingNote: String = ""
+    @Published var id: String = ""
+
     
     @Published var image: UIImage?
     
@@ -31,6 +33,16 @@ class TrainingsViewModel: ObservableObject {
         image = nil
     }
     
+    func getTraining() -> TrainingEntity {
+        var currentExerciseEntyties: [ExcerciseEntity] = []
+        for excercise in currentExercises {
+            let excEnt = ExcerciseEntity(id: excercise.id, name: excercise.name, time: excercise.time, distance: excercise.distance, weight: excercise.weight, sets: excercise.sets, repetitions: excercise.repetitions, notes: excercise.notes)
+            currentExerciseEntyties.append(excEnt)
+        }
+        self.id = UUID().uuidString
+        return TrainingEntity(id: UUID().uuidString, trainingDate: .now, trainingName: self.trainingName, exercises: currentExerciseEntyties, trainingNote: self.trainingNote, trainingImage: "")
+    }
+
     func storeTraining(imageUrl: URL?) {
         
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
@@ -38,7 +50,7 @@ class TrainingsViewModel: ObservableObject {
             return
         }
         var trainings = FirebaseManager.shared.currentUser?.trainings
-        let training = Training(id: UUID().uuidString, trainingDate: .now, trainingName: self.trainingName, exercises: currentExercises, trainingNote: self.trainingNote, trainingImage: imageUrl?.absoluteString ?? "")
+        let training = Training(id: self.id, trainingDate: .now, trainingName: self.trainingName, exercises: currentExercises, trainingNote: self.trainingNote, trainingImage: imageUrl?.absoluteString ?? "")
         trainings?.append(training)
         var exercisesData: [[String: Any]] = []
         for exercise in training.exercises {

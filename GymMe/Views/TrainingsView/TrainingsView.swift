@@ -10,12 +10,15 @@ import WrappingStack
 import Firebase
 import FirebaseFirestore
 import SDWebImageSwiftUI
+import SwiftData
 
 struct TrainingsView: View {
     //    var trainingController = TrainingController()
     @State private var trainingIdToScroll: UUID?
     @ObservedObject private var trainingsViewModel: TrainingsViewModel = .init()
     @Environment(\.dismiss) var dismiss
+    @Query private var trainings: [TrainingEntity]
+    @Environment(\.modelContext) private var context
     
     var body: some View {
         NavigationView {
@@ -39,7 +42,8 @@ struct TrainingsView: View {
                         .opacity(0.6)
                     Spacer()
                     
-                    NavigationLink(destination: CreateTrainingView(trainingsViewModel: trainingsViewModel), label: {
+                    NavigationLink(destination: CreateTrainingView(trainingsViewModel: trainingsViewModel)
+                        .modelContainer(for: TrainingEntity.self), label: {
                         Image(systemName: "square.and.pencil")
                             .resizable()
                             .scaledToFit()
